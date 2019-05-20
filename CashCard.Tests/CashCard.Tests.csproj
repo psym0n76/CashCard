@@ -67,6 +67,7 @@
   <ItemGroup>
     <Compile Include="Cash.Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="CashGlobal.Tests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
