@@ -8,36 +8,13 @@ namespace CashCard.Library
         private const int SecurityPin = 1234;
         private double _balance;
 
-        private static readonly CardGlobal Instance = new CardGlobal();
+        public static CardGlobal GetInstance { get; } = new CardGlobal();
 
-        public static CardGlobal GetInstance
+        public int SetPin { get; set; }
+
+        public bool IsPinOk()
         {
-            get { return Instance; }
-        }
-
-        public double Balance
-        {
-            get
-            {
-                if (IsPinOkFunction())
-                    return _balance;
-
-                return 0;
-            }
-        }
-
-        public int Pin { get; set; }
-
-
-        public void IsPinOk()
-        {
-            if (Pin != SecurityPin)
-                throw new Exception("SecurityPin Invalid");
-        }
-
-        public bool IsPinOkFunction()
-        {
-            if (Pin != SecurityPin)
+            if (SetPin != SecurityPin)
             {
                 throw new Exception("SecurityPin Invalid");
             }
@@ -47,23 +24,30 @@ namespace CashCard.Library
             }
         }
 
-
-
         public void Deposit(double amount)
         {
-            if (IsPinOkFunction())
+            if (IsPinOk())
                 _balance = Balance + amount;
         }
 
         public void Withdrawal(double amount)
         {
-            if (IsPinOkFunction())
+            if (IsPinOk())
                 if (_balance < amount)
                     throw new Exception("Not enough Cash in account");
 
             _balance = Balance - amount;
         }
 
+        public double Balance
+        {
+            get
+            {
+                if (IsPinOk())
+                    return _balance;
 
+                return 0;
+            }
+        }
     }
 }

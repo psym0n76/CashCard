@@ -65,9 +65,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cash.Tests.cs" />
+    <Compile Include="Card.Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CashGlobal.Tests.cs" />
+    <Compile Include="CardGlobal.Tests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

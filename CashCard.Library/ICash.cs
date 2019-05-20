@@ -4,6 +4,6 @@
     {
         void Withdrawal(double amount);
         void Deposit(double amount);
-        void IsPinOk();
+        bool IsPinOk();
     }
 }

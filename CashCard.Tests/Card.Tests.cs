@@ -5,45 +5,28 @@ namespace CashCard.Tests
 {
 
     [TestFixture]
-    public class CashGlobalTests
+    public class CardTests
     {
-        private CardGlobal _cashCard;
+        private Card _card;
 
         [SetUp]
         public void Setup()
         {
-            _cashCard = CardGlobal.GetInstance;
-            _cashCard.Pin = 1234;
+            _card = new Card(1234);
         }
-
 
         [Test]
         public void Card_CheckPin_ExceptionThrownIfPinIsNotOk()
         {
-            var cashCard = CardGlobal.GetInstance;
-            cashCard.Pin = 1;
+            var cashCard = new Card(1);
             Assert.That(() => cashCard.IsPinOk(), Throws.Exception);
         }
 
         [Test]
         public void Card_CheckPin_NoExceptionThrownIfPinIsOk()
         {
-            var cashCard = CardGlobal.GetInstance;
-            cashCard.Pin = 1234;
+            var cashCard = new Card(1234);
             Assert.That(() => cashCard.IsPinOk(), Throws.Nothing);
-        }
-
-        [Test]
-        public void Card_Deposit_BalanceShouldIncreaseByMultipleInputs()
-        {
-            var cashCard = _cashCard;
-            var existingBalance = cashCard.Balance;
-
-            cashCard.Deposit(1);
-            cashCard.Deposit(1);
-
-            //assert
-            Assert.That(cashCard.Balance, Is.EqualTo((2 - existingBalance)));
         }
 
 
@@ -52,16 +35,21 @@ namespace CashCard.Tests
         [TestCase(2, 2)]
         public void Card_Deposit_BalanceShouldIncreaseByTheInputAmount(int input, int expected)
         {
-            //act
-            var cashCard = _cashCard;
-            var existingBalance = cashCard.Balance;
-            cashCard.Deposit(input);
-
+            _card.Deposit(input);
             //assert
-            Assert.That(cashCard.Balance-existingBalance, Is.EqualTo(expected));
+            Assert.That(_card.Balance, Is.EqualTo(expected));
         }
 
+        [Test]
+        public void Card_Deposit_BalanceShouldIncreaseByMultipleDeposits()
+        {
+            var cashCard = _card;
+            cashCard.Deposit(10);
+            cashCard.Deposit(10);
 
+            //assert
+            Assert.That(cashCard.Balance, Is.EqualTo(20));
+        }
 
 
         [Test]
@@ -69,36 +57,30 @@ namespace CashCard.Tests
         [TestCase(2, 8, 10)]
         public void Card_Withdrawal_BalanceShouldDecreaseByTheInputAmount(int input, int expected, int initialBalance)
         {
-            var cashCard = _cashCard;
-            var existingBalance = cashCard.Balance;
+            var cashCard = _card;
             cashCard.Deposit(initialBalance);
             cashCard.Withdrawal(input);
-            Assert.That(cashCard.Balance - existingBalance, Is.EqualTo(expected));
+            Assert.That(cashCard.Balance, Is.EqualTo(expected));
         }
 
         [Test]
         public void Card_Withdrawal_BalanceShouldDecreaseByMultipleInputs()
         {
-            var cashCard = _cashCard;
-            var existingBalance = cashCard.Balance;
+            var cashCard = _card;
             //act
             cashCard.Deposit(20);
             cashCard.Withdrawal(10);
             cashCard.Withdrawal(10);
 
             //assert
-            Assert.That(cashCard.Balance - existingBalance, Is.EqualTo(0));
+            Assert.That(cashCard.Balance, Is.EqualTo(0));
         }
-
 
 
         [Test]
         public void Card_Withdrawal_ExceptionThrownIfBalanceIsLessThanZero()
         {
-            var cashCard = _cashCard;
-            Assert.That(() => cashCard.Withdrawal(100), Throws.Exception);
+            Assert.That(() => _card.Withdrawal(10), Throws.Exception);
         }
-
-
     }
 }

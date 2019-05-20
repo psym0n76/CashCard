@@ -5,7 +5,8 @@ namespace CashCard.Library
     public class Card : ICash
 
     {
-        private const int Pin = 1234;
+        // Implementation that works in one location
+        private const int SecurityPin = 1234;
         private double _balance;
         private readonly int _pin;
 
@@ -14,15 +15,17 @@ namespace CashCard.Library
             _pin = pin;
         }
 
-        public double Balance
+        public bool IsPinOk()
         {
-            get
+            if (_pin != SecurityPin)
             {
-                IsPinOk();
-                return _balance;
+                throw new Exception("Security Pin Invalid");
+            }
+            else
+            {
+                return true;
             }
         }
-
 
         public void Deposit(double amount)
         {
@@ -39,11 +42,13 @@ namespace CashCard.Library
             _balance = Balance - amount;
         }
 
-        public void IsPinOk()
+        public double Balance
         {
-            if (_pin != Pin)
-                throw new Exception("Pin Invalid");
+            get
+            {
+                IsPinOk();
+                return _balance;
+            }
         }
-
     }
 }
