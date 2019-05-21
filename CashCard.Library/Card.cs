@@ -9,7 +9,7 @@ namespace CashCard.Library
         private const int SecurityPin = 1234;
         private double _balance;
         private readonly int _pin;
-        private static readonly object _locker = new object();
+        private static readonly object Locker = new object();
 
         public Card(int pin)
         {
@@ -31,7 +31,7 @@ namespace CashCard.Library
         public void Deposit(double amount)
         {
 
-            lock (_locker)
+            lock (Locker)
             {
                 IsPinOk();
                 _balance = Balance + amount;
@@ -40,7 +40,7 @@ namespace CashCard.Library
 
         public void Withdrawal(double amount)
         {
-            lock (_locker)
+            lock (Locker)
             {
                 IsPinOk();
                 if (_balance < amount)
@@ -52,8 +52,6 @@ namespace CashCard.Library
 
         public double Balance
         {
-
-            //add locking
             get
             {
                 IsPinOk();
